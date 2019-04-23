@@ -6,7 +6,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Home/>
+        <div className="container" style={{ marginTop: "20px" }}>
+          <Home />
+        </div>
       </div>
     );
   }
