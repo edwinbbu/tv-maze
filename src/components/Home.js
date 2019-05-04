@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
-import { Form, Row, Col, Button, ListGroup } from 'react-bootstrap';
-
+import { Form, Row, Col, Button } from 'react-bootstrap';
+import ResultList from './ResultList';
+import getShow from '../helpers/getShow';
 class Home extends Component {
     constructor() {
         super();
         this.state = {
-            show: null
+            show: null,
+            showDetails: null
         }
     }
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("show:", e.target.show.value);
-        this.setState({ show: e.target.value });
+        const input = e.target.show.value;
+        this.setState({ show: input });
         let element = e.target.show;
         element.value = "";
+        const showDetails = await getShow(input);
+        this.setState({ show: input, showDetails: showDetails.data })
     }
     render() {
         return (
@@ -31,15 +35,7 @@ class Home extends Component {
                         </Col>
                     </Row>
                 </Form>
-
-                <h3 style={{ marginTop: "20px" }}>Result</h3>
-                <ListGroup>
-                    <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                    <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                    <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-                    <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-                    <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-                </ListGroup>
+                {this.state.showDetails && <ResultList showList={this.state.showDetails} />}
             </div>
         );
     }
